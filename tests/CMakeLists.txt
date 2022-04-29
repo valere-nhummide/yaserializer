@@ -45,3 +45,5 @@ install(
   RUNTIME DESTINATION
     ${CMAKE_INSTALL_BINDIR}/tests
 )
+
+add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})

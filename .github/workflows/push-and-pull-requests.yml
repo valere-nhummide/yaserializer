@@ -1,0 +1,30 @@
+name: Push / pull-requests
+on: [push, pull_request]
+
+env:
+  BUILD_TYPE: Release
+  BUILD_FOLDER: ${{github.workspace}}/build
+jobs:
+  cmake:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get conan
+      uses: turtlebrowser/get-conan@v1.0
+
+    - name: Install conan dependencies
+      run: conan install ${{github.workspace}} -if ${{env.BUILD_FOLDER}} -s build_type=${{env.BUILD_TYPE}}
+
+    - name: CMake configure
+      run: cmake -DCMAKE_INSTALL_PREFIX=${{env.BUILD_FOLDER}} -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -S ${{github.workspace}} -B ${{env.BUILD_FOLDER}}
+
+    - name: CMake install
+      run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}} --target all
+
+    - name: CMake test
+      working-directory: ${{env.BUILD_FOLDER}}
+      run: ctest -C ${{env.BUILD_TYPE}} -T test --output-on-failure
