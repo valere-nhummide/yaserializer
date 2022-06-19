@@ -13,14 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Get conan
-      uses: turtlebrowser/get-conan@v1.0
-
-    - name: Install conan dependencies
-      run: conan install ${{github.workspace}} -if ${{env.BUILD_FOLDER}} -s build_type=${{env.BUILD_TYPE}}
-
     - name: CMake configure
-      run: cmake -DCMAKE_INSTALL_PREFIX=${{env.BUILD_FOLDER}} -DBUILD_TESTS=ON -S ${{github.workspace}} -B ${{env.BUILD_FOLDER}}
+      run: cmake -DCMAKE_INSTALL_PREFIX=${{env.BUILD_FOLDER}} -DYASERIALIZER_BUILD_TESTS=ON -S ${{github.workspace}} -B ${{env.BUILD_FOLDER}}
 
     - name: CMake install
       run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}} --target install
