@@ -4,6 +4,7 @@ find_package(Catch2 REQUIRED)
 
 add_executable(${TEST_NAME}
   ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/enumerates-test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/integrals-test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/ranges/fixed-size-containers-test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/ranges/movable-containers-test.cpp
